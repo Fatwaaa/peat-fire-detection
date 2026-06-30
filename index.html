@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_2854bb143490bc274fda6c0269d1ff15 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_2854bb143490bc274fda6c0269d1ff15" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_2854bb143490bc274fda6c0269d1ff15 = L.map(
+                "map_2854bb143490bc274fda6c0269d1ff15",
+                {
+                    center: [0.5104, 101.4381],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 9,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_76b6483c993cc17b773d623eb0a2b485 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_76b6483c993cc17b773d623eb0a2b485.addTo(map_2854bb143490bc274fda6c0269d1ff15);
+        
+    
+            var tile_layer_d1ae40a6807ef0d9b6b02ff53f83005e = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Esri",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_d1ae40a6807ef0d9b6b02ff53f83005e.addTo(map_2854bb143490bc274fda6c0269d1ff15);
+        
+    
+            var marker_cluster_b71ef5f53b7026677fd818a3a93bd9ac = L.markerClusterGroup(
+                {
+}
+            );
+        
+    
+            var marker_feaa15a59e21b40345fda92c3d282124 = L.marker(
+                [0.5104, 101.4381],
+                {
+}
+            ).addTo(marker_cluster_b71ef5f53b7026677fd818a3a93bd9ac);
+        
+    
+            var icon_b6f4d3cefc0cffa608c8570db046d7f0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "fire",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fb5df8204a7836787a944f72abc5ecaa = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_44a7ee9275e5ac04388722018068b109 = $(`<div id="html_44a7ee9275e5ac04388722018068b109" style="width: 100.0%; height: 100.0%;"><b>Kebakaran Terdeteksi AI</b><br>Lat: 0.51040<br>Lon: 101.43810</div>`)[0];
+                popup_fb5df8204a7836787a944f72abc5ecaa.setContent(html_44a7ee9275e5ac04388722018068b109);
+            
+        
+
+        marker_feaa15a59e21b40345fda92c3d282124.bindPopup(popup_fb5df8204a7836787a944f72abc5ecaa)
+        ;
+
+        
+    
+    
+                marker_feaa15a59e21b40345fda92c3d282124.setIcon(icon_b6f4d3cefc0cffa608c8570db046d7f0);
+            
+    
+            var marker_621abe6e7fba89fbe600e9300a93a89c = L.marker(
+                [1.4644, 101.8153],
+                {
+}
+            ).addTo(marker_cluster_b71ef5f53b7026677fd818a3a93bd9ac);
+        
+    
+            var icon_ffc81eb85dc0817be0026b3279e4aa55 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "fire",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2054770d3cef1ea5e7fe23c57614a5e9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_aa30216e84679848d6ed05fe077ca017 = $(`<div id="html_aa30216e84679848d6ed05fe077ca017" style="width: 100.0%; height: 100.0%;"><b>Kebakaran Terdeteksi AI</b><br>Lat: 1.46440<br>Lon: 101.81530</div>`)[0];
+                popup_2054770d3cef1ea5e7fe23c57614a5e9.setContent(html_aa30216e84679848d6ed05fe077ca017);
+            
+        
+
+        marker_621abe6e7fba89fbe600e9300a93a89c.bindPopup(popup_2054770d3cef1ea5e7fe23c57614a5e9)
+        ;
+
+        
+    
+    
+                marker_621abe6e7fba89fbe600e9300a93a89c.setIcon(icon_ffc81eb85dc0817be0026b3279e4aa55);
+            
+    
+            var marker_4b1115648a0e999b52dfbb941f8532de = L.marker(
+                [0.2872, 102.7317],
+                {
+}
+            ).addTo(marker_cluster_b71ef5f53b7026677fd818a3a93bd9ac);
+        
+    
+            var icon_d819f50875dd9bfa928b1c789fe7529b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "fire",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_498d5840eea454e79b289a9aba9deff8 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_21d011e3e44ff44c1243564fe565b933 = $(`<div id="html_21d011e3e44ff44c1243564fe565b933" style="width: 100.0%; height: 100.0%;"><b>Kebakaran Terdeteksi AI</b><br>Lat: 0.28720<br>Lon: 102.73170</div>`)[0];
+                popup_498d5840eea454e79b289a9aba9deff8.setContent(html_21d011e3e44ff44c1243564fe565b933);
+            
+        
+
+        marker_4b1115648a0e999b52dfbb941f8532de.bindPopup(popup_498d5840eea454e79b289a9aba9deff8)
+        ;
+
+        
+    
+    
+                marker_4b1115648a0e999b52dfbb941f8532de.setIcon(icon_d819f50875dd9bfa928b1c789fe7529b);
+            
+    
+            var marker_8f32a88d73a27c989122f5667e0c522c = L.marker(
+                [1.6736, 101.4462],
+                {
+}
+            ).addTo(marker_cluster_b71ef5f53b7026677fd818a3a93bd9ac);
+        
+    
+            var icon_5daa95a8c66148595560ebbd3ae4eb2d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "fire",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d40530ef22ef3e0f00e31ee440688f93 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_32672039c1922edda67f2ac25de0f216 = $(`<div id="html_32672039c1922edda67f2ac25de0f216" style="width: 100.0%; height: 100.0%;"><b>Kebakaran Terdeteksi AI</b><br>Lat: 1.67360<br>Lon: 101.44620</div>`)[0];
+                popup_d40530ef22ef3e0f00e31ee440688f93.setContent(html_32672039c1922edda67f2ac25de0f216);
+            
+        
+
+        marker_8f32a88d73a27c989122f5667e0c522c.bindPopup(popup_d40530ef22ef3e0f00e31ee440688f93)
+        ;
+
+        
+    
+    
+                marker_8f32a88d73a27c989122f5667e0c522c.setIcon(icon_5daa95a8c66148595560ebbd3ae4eb2d);
+            
+    
+            var marker_2f212df097081875f4295e9d4c413b93 = L.marker(
+                [0.8122, 102.3422],
+                {
+}
+            ).addTo(marker_cluster_b71ef5f53b7026677fd818a3a93bd9ac);
+        
+    
+            var icon_e43ebaeea69409bc464eddc54d518adf = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "fire",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3bcddf92d9d0dde91b9906576a1624d9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b6890ac637d66d8a8108a38912d6f845 = $(`<div id="html_b6890ac637d66d8a8108a38912d6f845" style="width: 100.0%; height: 100.0%;"><b>Kebakaran Terdeteksi AI</b><br>Lat: 0.81220<br>Lon: 102.34220</div>`)[0];
+                popup_3bcddf92d9d0dde91b9906576a1624d9.setContent(html_b6890ac637d66d8a8108a38912d6f845);
+            
+        
+
+        marker_2f212df097081875f4295e9d4c413b93.bindPopup(popup_3bcddf92d9d0dde91b9906576a1624d9)
+        ;
+
+        
+    
+    
+                marker_2f212df097081875f4295e9d4c413b93.setIcon(icon_e43ebaeea69409bc464eddc54d518adf);
+            
+    
+            marker_cluster_b71ef5f53b7026677fd818a3a93bd9ac.addTo(map_2854bb143490bc274fda6c0269d1ff15);
+        
+    
+            var layer_control_f8657c7e266de31c0beb0acc1e37d30e_layers = {
+                base_layers : {
+                    "openstreetmap" : tile_layer_76b6483c993cc17b773d623eb0a2b485,
+                    "Satelit Esri" : tile_layer_d1ae40a6807ef0d9b6b02ff53f83005e,
+                },
+                overlays :  {
+                    "Titik Api Kebakaran Gambut AI" : marker_cluster_b71ef5f53b7026677fd818a3a93bd9ac,
+                },
+            };
+            let layer_control_f8657c7e266de31c0beb0acc1e37d30e = L.control.layers(
+                layer_control_f8657c7e266de31c0beb0acc1e37d30e_layers.base_layers,
+                layer_control_f8657c7e266de31c0beb0acc1e37d30e_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": true,
+  "autoZIndex": true,
+}
+            ).addTo(map_2854bb143490bc274fda6c0269d1ff15);
+
+        
+</script>
+</html>
