@@ -1,293 +1,345 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Peat Fire Detection - GIS Dashboard Riau</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <style>
-        * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        #map { height: 100vh; width: 100vw; position: absolute; top: 0; bottom: 0; z-index: 1; }
+<title>Peat Fire Detection – Riau Province</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden}
+  #map{height:100vh;width:100vw;position:fixed;top:0;left:0;z-index:1}
 
-        .welcome-banner {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.96);
-            padding: 12px 28px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            z-index: 1000;
-            text-align: center;
-            border-left: 5px solid #e74c3c;
-            white-space: nowrap;
-        }
-        .welcome-banner h1 { margin: 0; font-size: 17px; color: #2c3e50; font-weight: bold; }
-        .welcome-banner p  { margin: 3px 0 0 0; font-size: 11px; color: #7f8c8d; }
+  /* ── WELCOME BANNER ── */
+  .welcome-banner{
+    position:fixed;top:12px;left:50%;transform:translateX(-50%);
+    background:rgba(255,255,255,.96);padding:8px 20px;
+    border-radius:8px;box-shadow:0 3px 14px rgba(0,0,0,.22);
+    z-index:1000;text-align:center;border-left:5px solid #e74c3c;
+    white-space:nowrap;max-width:90vw;
+  }
+  .welcome-banner h1{font-size:15px;color:#2c3e50;font-weight:700}
+  .welcome-banner p{font-size:10px;color:#7f8c8d;margin-top:2px}
 
-        .control-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.96);
-            padding: 18px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            z-index: 1000;
-            width: 280px;
-        }
-        .control-panel h3 {
-            margin: 0 0 14px 0;
-            color: #2c3e50;
-            font-size: 14px;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 6px;
-        }
-        .form-group { margin-bottom: 12px; }
-        .form-group label {
-            display: block;
-            font-size: 10px;
-            font-weight: bold;
-            color: #34495e;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .form-control {
-            width: 100%;
-            padding: 7px 10px;
-            border: 1px solid #bdc3c7;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-        .stats-bar {
-            background: #f8f9fa;
-            border-radius: 4px;
-            padding: 8px 10px;
-            margin-bottom: 12px;
-            font-size: 11px;
-            color: #555;
-            border: 1px solid #e0e0e0;
-        }
-        .stats-bar span { font-weight: bold; color: #e74c3c; }
-        .btn-reset {
-            width: 100%;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
-            transition: background 0.2s;
-        }
-        .btn-reset:hover { background: #c0392b; }
+  /* ── DESKTOP SIDEBAR ── */
+  .control-panel{
+    position:fixed;top:12px;right:12px;
+    background:rgba(255,255,255,.97);padding:16px;
+    border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.22);
+    z-index:1000;width:260px;
+  }
+  .control-panel h3{font-size:12px;font-weight:700;color:#2c3e50;
+    border-bottom:2px solid #ecf0f1;padding-bottom:7px;margin-bottom:11px}
+  .counter{font-size:11px;color:#555;margin-bottom:10px;padding:5px 8px;
+    background:#fef9f9;border-radius:5px;border-left:3px solid #e74c3c}
+  .counter b{color:#e74c3c}
+  .form-group{margin-bottom:10px}
+  .form-group label{display:block;font-size:10px;font-weight:700;color:#34495e;
+    margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+  .form-control{width:100%;padding:6px 9px;border:1px solid #bdc3c7;
+    border-radius:5px;font-size:12px;outline:none;transition:border .2s}
+  .form-control:focus{border-color:#e74c3c}
+  .btn-reset{width:100%;background:#e74c3c;color:white;border:none;
+    padding:7px;border-radius:5px;cursor:pointer;font-weight:700;
+    font-size:12px;margin-top:3px;transition:background .2s}
+  .btn-reset:hover{background:#c0392b}
 
-        .legend {
-            position: absolute;
-            bottom: 30px;
-            left: 20px;
-            background: rgba(255,255,255,0.95);
-            padding: 12px 16px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
-            font-size: 11px;
-        }
-        .legend h4 { margin: 0 0 8px 0; font-size: 12px; color: #2c3e50; }
-        .legend-item { display: flex; align-items: center; margin-bottom: 4px; gap: 6px; }
-        .legend-dot {
-            width: 12px; height: 12px; border-radius: 50%;
-            flex-shrink: 0;
-        }
-    </style>
+  /* ── LEGEND (desktop bottom-left) ── */
+  .legend{
+    position:fixed;bottom:70px;left:12px;
+    background:rgba(255,255,255,.95);padding:10px 14px;
+    border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,.18);
+    z-index:1000;font-size:11px;
+  }
+  .legend h4{margin-bottom:6px;font-size:10px;color:#2c3e50;
+    text-transform:uppercase;letter-spacing:.5px}
+  .legend-item{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+  .legend-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+
+  /* ── STATS BAR (desktop bottom center) ── */
+  .stats-bar{
+    position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
+    background:rgba(255,255,255,.95);padding:6px 18px;
+    border-radius:30px;box-shadow:0 3px 12px rgba(0,0,0,.18);
+    z-index:1000;display:flex;gap:18px;align-items:center;font-size:11px;color:#2c3e50;
+  }
+  .stat-item{text-align:center}
+  .stat-item strong{display:block;font-size:17px;color:#e74c3c;line-height:1.1}
+
+  /* ── MOBILE OVERRIDES (max-width: 600px) ── */
+  @media(max-width:600px){
+    .welcome-banner{
+      top:8px;padding:6px 12px;max-width:calc(100vw - 100px);
+      left:8px;transform:none;white-space:normal;
+    }
+    .welcome-banner h1{font-size:12px}
+    .welcome-banner p{display:none}
+
+    /* Sidebar jadi bottom sheet */
+    .control-panel{
+      top:auto;right:0;bottom:0;left:0;width:100%;
+      border-radius:14px 14px 0 0;padding:0;
+      transition:max-height .3s ease;overflow:hidden;
+    }
+    .control-panel.collapsed{max-height:44px}
+    .control-panel.expanded{max-height:85vh;overflow-y:auto}
+    .panel-handle{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:10px 16px;cursor:pointer;background:#fff;
+      border-radius:14px 14px 0 0;border-bottom:1px solid #ecf0f1;
+    }
+    .panel-handle span{font-size:13px;font-weight:700;color:#2c3e50}
+    .panel-handle .chevron{font-size:14px;color:#e74c3c;transition:transform .2s}
+    .panel-handle .chevron.up{transform:rotate(180deg)}
+    .panel-body{padding:12px 16px 20px}
+
+    /* Legend di atas panel */
+    .legend{bottom:50px;left:8px;font-size:10px;padding:7px 10px}
+    .legend h4{font-size:9px}
+
+    /* Stats bar hilang di mobile (info di counter sudah cukup) */
+    .stats-bar{display:none}
+  }
+
+  @media(min-width:601px){
+    .panel-handle{display:none}
+    .panel-body{display:contents}
+  }
+
+  /* Leaflet layer control di mobile - letakkan supaya tidak tertutup panel */
+  @media(max-width:600px){
+    .leaflet-top.leaflet-right{top:56px!important;right:8px!important}
+    .leaflet-control-layers{font-size:12px}
+  }
+</style>
 </head>
 <body>
 
 <div class="welcome-banner">
-    <h1><i class="fa-solid fa-fire" style="color:#e74c3c;"></i> Selamat Datang di Project Computer Vision</h1>
-    <p>By Fatwa - Sistem Deteksi & Monitoring Kebakaran Lahan Gambut AI | Provinsi Riau</p>
+  <h1><i class="fa-solid fa-fire" style="color:#e74c3c"></i> Peat Fire Detection – Riau</h1>
+  <p>By Fatwa &nbsp;|&nbsp; Deteksi Kebakaran Lahan Gambut | Citra Sentinel-2 AI</p>
 </div>
 
-<div class="control-panel">
-    <h3><i class="fa-solid fa-sliders"></i> Menu Navigasi & Filter</h3>
+<div class="control-panel collapsed" id="controlPanel">
+  <!-- Handle hanya tampil di mobile -->
+  <div class="panel-handle" onclick="togglePanel()">
+    <span><i class="fa-solid fa-sliders" style="color:#e74c3c"></i>&nbsp; Filter &amp; Navigasi</span>
+    <i class="fa-solid fa-chevron-up chevron" id="chevronIcon"></i>
+  </div>
 
-    <div class="stats-bar">
-        Menampilkan <span id="countShown">0</span> dari <span id="countTotal">0</span> titik kebakaran
-    </div>
+  <div class="panel-body">
+    <div class="control-panel-inner" style="padding-top:4px">
+      <h3 style="display:none" class="desktop-only"><i class="fa-solid fa-sliders"></i>&nbsp; Navigasi &amp; Filter</h3>
+      <div class="counter" id="counterText">Menampilkan <b id="cntShow">84</b> dari <b>84</b> titik kebakaran</div>
 
-    <div class="form-group">
-        <label><i class="fa-solid fa-magnifying-glass"></i> Cari Wilayah / Desa</label>
+      <div class="form-group">
+        <label><i class="fa-solid fa-magnifying-glass"></i>&nbsp; Cari Wilayah / Desa</label>
         <input type="text" id="searchLocation" class="form-control"
-               placeholder="Ketik nama desa atau wilayah..." oninput="filterData()">
-    </div>
+               placeholder="Ketik nama desa atau wilayah…" oninput="filterData()">
+      </div>
 
-    <div class="form-group">
-        <label><i class="fa-solid fa-map-location-dot"></i> Filter Kabupaten/Kota</label>
+      <div class="form-group">
+        <label><i class="fa-solid fa-map-location-dot"></i>&nbsp; Filter Kabupaten / Kota</label>
         <select id="filterKabupaten" class="form-control" onchange="filterData()">
-            <option value="ALL">-- Tampilkan Semua Wilayah --</option>
-            <option value="Pekanbaru">Pekanbaru</option>
-            <option value="Dumai">Dumai</option>
-            <option value="Bengkalis">Bengkalis</option>
-            <option value="Rokan Hilir">Rokan Hilir</option>
-            <option value="Rokan Hulu">Rokan Hulu</option>
-            <option value="Kampar">Kampar</option>
-            <option value="Siak">Siak</option>
-            <option value="Pelalawan">Pelalawan</option>
-            <option value="Kepulauan Meranti">Kepulauan Meranti</option>
-            <option value="Indragiri Hulu">Indragiri Hulu</option>
-            <option value="Indragiri Hilir">Indragiri Hilir</option>
-            <option value="Kuantan Singingi">Kuantan Singingi</option>
+          <option value="ALL">— Semua Kabupaten / Kota —</option>
+          <option>Kuantan Singingi</option>
+          <option>Indragiri Hulu</option>
+          <option>Indragiri Hilir</option>
+          <option>Pelalawan</option>
+          <option>Siak</option>
+          <option>Kampar</option>
+          <option>Rokan Hulu</option>
+          <option>Bengkalis</option>
+          <option>Rokan Hilir</option>
+          <option>Kepulauan Meranti</option>
+          <option>Pekanbaru</option>
+          <option>Dumai</option>
         </select>
-    </div>
+      </div>
 
-    <div class="form-group">
-        <label><i class="fa-solid fa-triangle-exclamation"></i> Filter Tingkat Keparahan</label>
+      <div class="form-group">
+        <label><i class="fa-solid fa-gauge-high"></i>&nbsp; Filter Tingkat Keparahan</label>
         <select id="filterTingkat" class="form-control" onchange="filterData()">
-            <option value="ALL">-- Semua Tingkat --</option>
-            <option value="Sangat Tinggi">Sangat Tinggi</option>
-            <option value="Tinggi">Tinggi</option>
-            <option value="Sedang">Sedang</option>
-            <option value="Rendah">Rendah</option>
+          <option value="ALL">— Semua Tingkat —</option>
+          <option>Sangat Tinggi</option>
+          <option>Tinggi</option>
+          <option>Sedang</option>
+          <option>Rendah</option>
         </select>
-    </div>
+      </div>
 
-    <button class="btn-reset" onclick="resetFilter()">
-        <i class="fa-solid fa-rotate-left"></i> Reset Filter
-    </button>
+      <button class="btn-reset" onclick="resetFilter()">
+        <i class="fa-solid fa-rotate-left"></i>&nbsp; Reset Filter
+      </button>
+    </div>
+  </div>
 </div>
 
 <div class="legend">
-    <h4><i class="fa-solid fa-circle-info"></i> Tingkat Keparahan</h4>
-    <div class="legend-item"><div class="legend-dot" style="background:#7f0000;"></div> Sangat Tinggi</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e74c3c;"></div> Tinggi</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#f39c12;"></div> Sedang</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#f1c40f;"></div> Rendah</div>
+  <h4><i class="fa-solid fa-circle-info"></i>&nbsp; Keparahan</h4>
+  <div class="legend-item"><div class="legend-dot" style="background:#8B0000"></div>Sangat Tinggi</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>Tinggi</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>Sedang</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f1c40f"></div>Rendah</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item"><strong id="statTotal">84</strong>Total</div>
+  <div class="stat-item"><strong id="statST">0</strong><span style="color:#8B0000">●</span> Sgt Tinggi</div>
+  <div class="stat-item"><strong id="statTi">0</strong><span style="color:#e74c3c">●</span> Tinggi</div>
+  <div class="stat-item"><strong id="statSe">0</strong><span style="color:#e67e22">●</span> Sedang</div>
+  <div class="stat-item"><strong id="statRe">0</strong><span style="color:#f1c40f">●</span> Rendah</div>
 </div>
 
 <div id="map"></div>
 
 <script>
-    // --- Base Layers ---
-    const osmLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 19
+  // ── Base Layers ──
+  const osmLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {attribution:'&copy; OpenStreetMap contributors',maxZoom:19});
+
+  const esriSat = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    {attribution:'Tiles &copy; Esri &mdash; Esri, USGS, USDA, AEX',maxZoom:19});
+
+  const esriLabel = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+    {maxZoom:19,pane:'overlayPane'});
+
+  const map = L.map('map',{center:[0.50,101.90],zoom:8,layers:[esriSat]});
+  esriLabel.addTo(map);
+
+  L.control.layers({
+    "<i class='fa-solid fa-satellite'></i>&nbsp; Satelit Esri": esriSat,
+    "<i class='fa-solid fa-map'></i>&nbsp; OpenStreetMap": osmLayer
+  },{},{collapsed:false}).addTo(map);
+
+  // ── Data ──
+  const hotspotData = [{"lat": -0.036, "lon": 101.456, "wilayah": "Kuantan Singingi", "luas": "2.3 Ha", "tingkat": "Tinggi", "desa": "Teluk Kuantan"}, {"lat": -0.24, "lon": 101.445, "wilayah": "Kuantan Singingi", "luas": "1.8 Ha", "tingkat": "Sedang", "desa": "Benai"}, {"lat": -0.088, "lon": 101.677, "wilayah": "Kuantan Singingi", "luas": "3.7 Ha", "tingkat": "Sangat Tinggi", "desa": "Cerenti"}, {"lat": -0.33, "lon": 101.38, "wilayah": "Kuantan Singingi", "luas": "1.1 Ha", "tingkat": "Sedang", "desa": "Logas Tanah Darat"}, {"lat": -0.515, "lon": 101.401, "wilayah": "Kuantan Singingi", "luas": "2.6 Ha", "tingkat": "Tinggi", "desa": "Baserah"}, {"lat": -0.602, "lon": 101.274, "wilayah": "Kuantan Singingi", "luas": "0.9 Ha", "tingkat": "Rendah", "desa": "Pangean"}, {"lat": -0.01, "lon": 101.52, "wilayah": "Kuantan Singingi", "luas": "4.1 Ha", "tingkat": "Sangat Tinggi", "desa": "Kuantan Mudik"}, {"lat": -0.342, "lon": 102.568, "wilayah": "Indragiri Hulu", "luas": "4.1 Ha", "tingkat": "Sangat Tinggi", "desa": "Rengat"}, {"lat": -0.498, "lon": 102.386, "wilayah": "Indragiri Hulu", "luas": "1.6 Ha", "tingkat": "Sedang", "desa": "Lirik"}, {"lat": -0.148, "lon": 102.71, "wilayah": "Indragiri Hulu", "luas": "2.8 Ha", "tingkat": "Tinggi", "desa": "Kuala Cenaku"}, {"lat": -0.605, "lon": 102.21, "wilayah": "Indragiri Hulu", "luas": "1.2 Ha", "tingkat": "Sedang", "desa": "Peranap"}, {"lat": -0.33, "lon": 102.456, "wilayah": "Indragiri Hulu", "luas": "3.5 Ha", "tingkat": "Tinggi", "desa": "Pematang Reba"}, {"lat": -0.28, "lon": 102.65, "wilayah": "Indragiri Hulu", "luas": "2.0 Ha", "tingkat": "Sedang", "desa": "Batang Cenaku"}, {"lat": -0.68, "lon": 102.32, "wilayah": "Indragiri Hulu", "luas": "5.2 Ha", "tingkat": "Sangat Tinggi", "desa": "Pasir Penyu"}, {"lat": -0.337, "lon": 103.175, "wilayah": "Indragiri Hilir", "luas": "6.5 Ha", "tingkat": "Sangat Tinggi", "desa": "Tembilahan"}, {"lat": -0.56, "lon": 103.4, "wilayah": "Indragiri Hilir", "luas": "4.2 Ha", "tingkat": "Tinggi", "desa": "Kuala Indragiri"}, {"lat": -0.095, "lon": 103.01, "wilayah": "Indragiri Hilir", "luas": "3.1 Ha", "tingkat": "Tinggi", "desa": "Enok"}, {"lat": -0.81, "lon": 103.6, "wilayah": "Indragiri Hilir", "luas": "5.8 Ha", "tingkat": "Sangat Tinggi", "desa": "Mandah"}, {"lat": -0.38, "lon": 102.9, "wilayah": "Indragiri Hilir", "luas": "2.3 Ha", "tingkat": "Sedang", "desa": "Batang Tuaka"}, {"lat": -0.66, "lon": 102.82, "wilayah": "Indragiri Hilir", "luas": "3.9 Ha", "tingkat": "Tinggi", "desa": "Gaung"}, {"lat": -0.58, "lon": 103.72, "wilayah": "Indragiri Hilir", "luas": "4.7 Ha", "tingkat": "Sangat Tinggi", "desa": "Kateman"}, {"lat": -0.84, "lon": 102.76, "wilayah": "Indragiri Hilir", "luas": "2.8 Ha", "tingkat": "Tinggi", "desa": "Reteh"}, {"lat": 0.287, "lon": 102.732, "wilayah": "Pelalawan", "luas": "5.2 Ha", "tingkat": "Sangat Tinggi", "desa": "Pangkalan Kerinci"}, {"lat": 0.182, "lon": 102.045, "wilayah": "Pelalawan", "luas": "3.4 Ha", "tingkat": "Tinggi", "desa": "Langgam"}, {"lat": 0.084, "lon": 102.112, "wilayah": "Pelalawan", "luas": "2.1 Ha", "tingkat": "Sedang", "desa": "Ukui"}, {"lat": 0.298, "lon": 102.955, "wilayah": "Pelalawan", "luas": "4.7 Ha", "tingkat": "Sangat Tinggi", "desa": "Teluk Meranti"}, {"lat": 0.312, "lon": 102.5, "wilayah": "Pelalawan", "luas": "3.0 Ha", "tingkat": "Tinggi", "desa": "Bandar Sei Kijang"}, {"lat": 0.158, "lon": 102.862, "wilayah": "Pelalawan", "luas": "2.5 Ha", "tingkat": "Sedang", "desa": "Bunut"}, {"lat": -0.145, "lon": 102.57, "wilayah": "Pelalawan", "luas": "6.1 Ha", "tingkat": "Sangat Tinggi", "desa": "Kuala Kampar"}, {"lat": 0.468, "lon": 102.013, "wilayah": "Siak", "luas": "3.5 Ha", "tingkat": "Tinggi", "desa": "Siak Sri Indrapura"}, {"lat": 0.849, "lon": 101.584, "wilayah": "Siak", "luas": "2.9 Ha", "tingkat": "Tinggi", "desa": "Minas"}, {"lat": 0.956, "lon": 102.167, "wilayah": "Siak", "luas": "1.8 Ha", "tingkat": "Sedang", "desa": "Dayun"}, {"lat": 0.58, "lon": 101.78, "wilayah": "Siak", "luas": "2.2 Ha", "tingkat": "Sedang", "desa": "Koto Gasib"}, {"lat": 0.968, "lon": 101.565, "wilayah": "Siak", "luas": "3.1 Ha", "tingkat": "Tinggi", "desa": "Kandis"}, {"lat": 0.703, "lon": 101.968, "wilayah": "Siak", "luas": "4.4 Ha", "tingkat": "Sangat Tinggi", "desa": "Lubuk Dalam"}, {"lat": 1.21, "lon": 101.89, "wilayah": "Siak", "luas": "1.5 Ha", "tingkat": "Sedang", "desa": "Sungai Apit"}, {"lat": 0.321, "lon": 101.012, "wilayah": "Kampar", "luas": "1.4 Ha", "tingkat": "Sedang", "desa": "Bangkinang"}, {"lat": 0.391, "lon": 101.26, "wilayah": "Kampar", "luas": "2.6 Ha", "tingkat": "Tinggi", "desa": "Tambang"}, {"lat": 0.428, "lon": 100.75, "wilayah": "Kampar", "luas": "0.8 Ha", "tingkat": "Rendah", "desa": "XIII Koto Kampar"}, {"lat": 0.688, "lon": 101.218, "wilayah": "Kampar", "luas": "3.1 Ha", "tingkat": "Tinggi", "desa": "Tapung"}, {"lat": 0.205, "lon": 101.025, "wilayah": "Kampar", "luas": "2.0 Ha", "tingkat": "Sedang", "desa": "Kampar Kiri"}, {"lat": 0.25, "lon": 101.38, "wilayah": "Kampar", "luas": "1.7 Ha", "tingkat": "Sedang", "desa": "Siak Hulu"}, {"lat": 0.81, "lon": 100.91, "wilayah": "Kampar", "luas": "4.3 Ha", "tingkat": "Sangat Tinggi", "desa": "Kampar Utara"}, {"lat": 0.909, "lon": 100.369, "wilayah": "Rokan Hulu", "luas": "1.5 Ha", "tingkat": "Sedang", "desa": "Pasir Pengaraian"}, {"lat": 1.065, "lon": 100.176, "wilayah": "Rokan Hulu", "luas": "2.3 Ha", "tingkat": "Tinggi", "desa": "Ujung Batu"}, {"lat": 0.878, "lon": 100.421, "wilayah": "Rokan Hulu", "luas": "1.9 Ha", "tingkat": "Sedang", "desa": "Rambah"}, {"lat": 1.32, "lon": 100.073, "wilayah": "Rokan Hulu", "luas": "3.4 Ha", "tingkat": "Tinggi", "desa": "Tambusai"}, {"lat": 0.843, "lon": 100.148, "wilayah": "Rokan Hulu", "luas": "2.8 Ha", "tingkat": "Tinggi", "desa": "Rokan IV Koto"}, {"lat": 1.161, "lon": 100.517, "wilayah": "Rokan Hulu", "luas": "1.2 Ha", "tingkat": "Rendah", "desa": "Kepenuhan"}, {"lat": 1.05, "lon": 100.708, "wilayah": "Rokan Hulu", "luas": "4.5 Ha", "tingkat": "Sangat Tinggi", "desa": "Bonai Darussalam"}, {"lat": 1.464, "lon": 101.57, "wilayah": "Bengkalis", "luas": "3.5 Ha", "tingkat": "Tinggi", "desa": "Mandau / Duri"}, {"lat": 1.3, "lon": 102.1, "wilayah": "Bengkalis", "luas": "1.7 Ha", "tingkat": "Sedang", "desa": "Bukit Batu"}, {"lat": 1.482, "lon": 102.108, "wilayah": "Bengkalis", "luas": "4.9 Ha", "tingkat": "Sangat Tinggi", "desa": "Bengkalis Kota"}, {"lat": 1.146, "lon": 101.915, "wilayah": "Bengkalis", "luas": "2.2 Ha", "tingkat": "Sedang", "desa": "Siak Kecil"}, {"lat": 1.038, "lon": 101.588, "wilayah": "Bengkalis", "luas": "3.7 Ha", "tingkat": "Tinggi", "desa": "Talang Muandau"}, {"lat": 1.28, "lon": 101.655, "wilayah": "Bengkalis", "luas": "2.9 Ha", "tingkat": "Tinggi", "desa": "Bathin Solapan"}, {"lat": 1.614, "lon": 102.16, "wilayah": "Bengkalis", "luas": "5.3 Ha", "tingkat": "Sangat Tinggi", "desa": "Bantan"}, {"lat": 2.143, "lon": 100.813, "wilayah": "Rokan Hilir", "luas": "4.8 Ha", "tingkat": "Sangat Tinggi", "desa": "Bagansiapiapi"}, {"lat": 1.79, "lon": 100.932, "wilayah": "Rokan Hilir", "luas": "2.1 Ha", "tingkat": "Tinggi", "desa": "Tanah Putih"}, {"lat": 2.034, "lon": 100.988, "wilayah": "Rokan Hilir", "luas": "3.6 Ha", "tingkat": "Tinggi", "desa": "Bangko"}, {"lat": 1.833, "lon": 101.18, "wilayah": "Rokan Hilir", "luas": "5.1 Ha", "tingkat": "Sangat Tinggi", "desa": "Rimba Melintang"}, {"lat": 1.571, "lon": 100.782, "wilayah": "Rokan Hilir", "luas": "2.8 Ha", "tingkat": "Tinggi", "desa": "Bagan Sinembah"}, {"lat": 1.634, "lon": 101.035, "wilayah": "Rokan Hilir", "luas": "3.3 Ha", "tingkat": "Tinggi", "desa": "Pujud"}, {"lat": 2.088, "lon": 101.125, "wilayah": "Rokan Hilir", "luas": "4.0 Ha", "tingkat": "Sangat Tinggi", "desa": "Kubu"}, {"lat": 0.972, "lon": 102.95, "wilayah": "Kepulauan Meranti", "luas": "3.3 Ha", "tingkat": "Tinggi", "desa": "Selat Panjang"}, {"lat": 1.063, "lon": 102.707, "wilayah": "Kepulauan Meranti", "luas": "4.6 Ha", "tingkat": "Sangat Tinggi", "desa": "Pulau Padang"}, {"lat": 0.729, "lon": 103.053, "wilayah": "Kepulauan Meranti", "luas": "2.4 Ha", "tingkat": "Sedang", "desa": "Rangsang"}, {"lat": 0.78, "lon": 102.87, "wilayah": "Kepulauan Meranti", "luas": "1.9 Ha", "tingkat": "Sedang", "desa": "Rangsang Barat"}, {"lat": 1.15, "lon": 102.78, "wilayah": "Kepulauan Meranti", "luas": "3.8 Ha", "tingkat": "Tinggi", "desa": "Merbau"}, {"lat": 0.85, "lon": 102.64, "wilayah": "Kepulauan Meranti", "luas": "5.0 Ha", "tingkat": "Sangat Tinggi", "desa": "Tebing Tinggi Barat"}, {"lat": 0.51, "lon": 101.438, "wilayah": "Pekanbaru", "luas": "1.2 Ha", "tingkat": "Tinggi", "desa": "Tampan"}, {"lat": 0.62, "lon": 101.4, "wilayah": "Pekanbaru", "luas": "0.5 Ha", "tingkat": "Sedang", "desa": "Rumbai"}, {"lat": 0.48, "lon": 101.47, "wilayah": "Pekanbaru", "luas": "0.7 Ha", "tingkat": "Rendah", "desa": "Bukit Raya"}, {"lat": 0.55, "lon": 101.38, "wilayah": "Pekanbaru", "luas": "1.5 Ha", "tingkat": "Sedang", "desa": "Payung Sekaki"}, {"lat": 0.493, "lon": 101.418, "wilayah": "Pekanbaru", "luas": "0.9 Ha", "tingkat": "Rendah", "desa": "Marpoyan Damai"}, {"lat": 0.504, "lon": 101.5, "wilayah": "Pekanbaru", "luas": "2.1 Ha", "tingkat": "Tinggi", "desa": "Tenayan Raya"}, {"lat": 0.59, "lon": 101.456, "wilayah": "Pekanbaru", "luas": "1.3 Ha", "tingkat": "Sedang", "desa": "Rumbai Pesisir"}, {"lat": 1.71, "lon": 101.517, "wilayah": "Dumai", "luas": "2.9 Ha", "tingkat": "Tinggi", "desa": "Medang Kampai"}, {"lat": 1.647, "lon": 101.469, "wilayah": "Dumai", "luas": "1.4 Ha", "tingkat": "Sedang", "desa": "Bukit Kapur"}, {"lat": 1.73, "lon": 101.55, "wilayah": "Dumai", "luas": "3.8 Ha", "tingkat": "Sangat Tinggi", "desa": "Sungai Sembilan"}, {"lat": 1.602, "lon": 101.466, "wilayah": "Dumai", "luas": "2.1 Ha", "tingkat": "Tinggi", "desa": "Dumai Timur"}, {"lat": 1.663, "lon": 101.413, "wilayah": "Dumai", "luas": "1.6 Ha", "tingkat": "Sedang", "desa": "Dumai Barat"}, {"lat": 1.668, "lon": 101.455, "wilayah": "Dumai", "luas": "0.9 Ha", "tingkat": "Rendah", "desa": "Dumai Kota"}, {"lat": 1.609, "lon": 101.454, "wilayah": "Dumai", "luas": "2.5 Ha", "tingkat": "Tinggi", "desa": "Dumai Selatan"}];
+  const colorMap = {
+    "Sangat Tinggi":"#8B0000","Tinggi":"#e74c3c",
+    "Sedang":"#e67e22","Rendah":"#f1c40f"
+  };
+  let markersLayer = [];
+
+  function makeIcon(color){
+    return L.divIcon({
+      html:`<div style="
+        background:${color};width:20px;height:20px;
+        border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+        border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,.5);"></div>`,
+      className:'',iconSize:[20,20],iconAnchor:[10,20],popupAnchor:[0,-22]
+    });
+  }
+
+  function renderMarkers(data){
+    markersLayer.forEach(m=>map.removeLayer(m));
+    markersLayer=[];
+    const c={"Sangat Tinggi":0,"Tinggi":0,"Sedang":0,"Rendah":0};
+
+    data.forEach(item=>{
+      const col=colorMap[item.tingkat]||"#e74c3c";
+      c[item.tingkat]=(c[item.tingkat]||0)+1;
+      const popup=`
+        <div style="font-family:Segoe UI,Arial;width:210px;">
+          <div style="background:${col};color:#fff;padding:7px 10px;
+            border-radius:4px 4px 0 0;margin:-8px -8px 8px -8px;">
+            <b style="font-size:13px;"><i class="fa-solid fa-fire"></i>&nbsp;Kebakaran Terdeteksi AI</b>
+          </div>
+          <table style="width:100%;font-size:12px;border-collapse:collapse;">
+            <tr style="border-bottom:1px solid #eee">
+              <td style="padding:3px 4px;color:#777">Kabupaten</td>
+              <td style="padding:3px 4px;font-weight:700">${item.wilayah}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee">
+              <td style="padding:3px 4px;color:#777">Desa/Kec.</td>
+              <td style="padding:3px 4px">${item.desa}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee">
+              <td style="padding:3px 4px;color:#777">Est. Luas</td>
+              <td style="padding:3px 4px;font-weight:700;color:#e74c3c">${item.luas}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee">
+              <td style="padding:3px 4px;color:#777">Keparahan</td>
+              <td style="padding:3px 4px">
+                <span style="background:${col};color:#fff;padding:2px 7px;
+                  border-radius:10px;font-size:10px;font-weight:700">${item.tingkat}</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:3px 4px;color:#777">Koordinat</td>
+              <td style="padding:3px 4px;font-size:10px">${item.lat.toFixed(4)}, ${item.lon.toFixed(4)}</td>
+            </tr>
+          </table>
+        </div>`;
+      const m=L.marker([item.lat,item.lon],{icon:makeIcon(col)})
+               .bindPopup(popup,{maxWidth:230});
+      m.addTo(map);
+      markersLayer.push(m);
     });
 
-    const esriSatellite = L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        maxZoom: 19
+    // Update counter & stats
+    document.getElementById('cntShow').textContent=data.length;
+    document.getElementById('statTotal').textContent=data.length;
+    document.getElementById('statST').textContent=c["Sangat Tinggi"]||0;
+    document.getElementById('statTi').textContent=c["Tinggi"]||0;
+    document.getElementById('statSe').textContent=c["Sedang"]||0;
+    document.getElementById('statRe').textContent=c["Rendah"]||0;
+  }
+
+  function filterData(){
+    const s=document.getElementById('searchLocation').value.toLowerCase();
+    const k=document.getElementById('filterKabupaten').value;
+    const t=document.getElementById('filterTingkat').value;
+    const filtered=hotspotData.filter(item=>{
+      const ms=!s||item.wilayah.toLowerCase().includes(s)||item.desa.toLowerCase().includes(s);
+      const mk=k==="ALL"||item.wilayah===k;
+      const mt=t==="ALL"||item.tingkat===t;
+      return ms&&mk&&mt;
     });
-
-    const esriLabels = L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 19,
-        opacity: 0.8
-    });
-
-    const map = L.map('map', {
-        center: [0.5000, 101.9000],
-        zoom: 8,
-        layers: [esriSatellite, esriLabels]
-    });
-
-    const baseMaps = {
-        "<i class='fa-solid fa-satellite'></i> Satelit Esri": L.layerGroup([esriSatellite, esriLabels]),
-        "<i class='fa-solid fa-map'></i> OpenStreetMap": osmLayer
-    };
-    L.control.layers(baseMaps, null, { position: 'bottomright' }).addTo(map);
-
-    // --- Hotspot Data ---
-    const hotspotData = [{"lat": 0.5104, "lon": 101.4381, "wilayah": "Pekanbaru", "luas": "1.2 Ha", "tingkat": "Tinggi", "desa": "Tampan"}, {"lat": 0.62, "lon": 101.4, "wilayah": "Pekanbaru", "luas": "0.5 Ha", "tingkat": "Sedang", "desa": "Rumbai"}, {"lat": 0.48, "lon": 101.39, "wilayah": "Pekanbaru", "luas": "0.8 Ha", "tingkat": "Rendah", "desa": "Bukit Raya"}, {"lat": 0.55, "lon": 101.47, "wilayah": "Pekanbaru", "luas": "1.0 Ha", "tingkat": "Sedang", "desa": "Marpoyan Damai"}, {"lat": 1.68, "lon": 101.45, "wilayah": "Dumai", "luas": "2.9 Ha", "tingkat": "Tinggi", "desa": "Medang Kampai"}, {"lat": 1.72, "lon": 101.4, "wilayah": "Dumai", "luas": "1.4 Ha", "tingkat": "Sedang", "desa": "Dumai Timur"}, {"lat": 1.65, "lon": 101.5, "wilayah": "Dumai", "luas": "3.1 Ha", "tingkat": "Tinggi", "desa": "Bukit Kapur"}, {"lat": 1.75, "lon": 101.36, "wilayah": "Dumai", "luas": "0.9 Ha", "tingkat": "Rendah", "desa": "Sungai Sembilan"}, {"lat": 1.4644, "lon": 101.8153, "wilayah": "Bengkalis", "luas": "3.5 Ha", "tingkat": "Tinggi", "desa": "Mandau"}, {"lat": 1.3, "lon": 102.1, "wilayah": "Bengkalis", "luas": "1.7 Ha", "tingkat": "Sedang", "desa": "Bukit Batu"}, {"lat": 1.55, "lon": 102.05, "wilayah": "Bengkalis", "luas": "4.2 Ha", "tingkat": "Sangat Tinggi", "desa": "Rupat Utara"}, {"lat": 1.2, "lon": 102.25, "wilayah": "Bengkalis", "luas": "2.0 Ha", "tingkat": "Tinggi", "desa": "Siak Kecil"}, {"lat": 1.4, "lon": 101.9, "wilayah": "Bengkalis", "luas": "1.1 Ha", "tingkat": "Sedang", "desa": "Bantan"}, {"lat": 1.6736, "lon": 101.4462, "wilayah": "Rokan Hilir", "luas": "4.8 Ha", "tingkat": "Sangat Tinggi", "desa": "Bagansiapiapi"}, {"lat": 1.55, "lon": 101.2, "wilayah": "Rokan Hilir", "luas": "2.1 Ha", "tingkat": "Tinggi", "desa": "Tanah Putih"}, {"lat": 1.8, "lon": 101.0, "wilayah": "Rokan Hilir", "luas": "3.3 Ha", "tingkat": "Tinggi", "desa": "Kubu"}, {"lat": 2.0, "lon": 100.9, "wilayah": "Rokan Hilir", "luas": "1.5 Ha", "tingkat": "Sedang", "desa": "Pasir Limau Kapas"}, {"lat": 0.9, "lon": 100.35, "wilayah": "Rokan Hulu", "luas": "2.0 Ha", "tingkat": "Tinggi", "desa": "Ujung Batu"}, {"lat": 1.1, "lon": 100.4, "wilayah": "Rokan Hulu", "luas": "1.3 Ha", "tingkat": "Sedang", "desa": "Rambah Samo"}, {"lat": 0.75, "lon": 100.5, "wilayah": "Rokan Hulu", "luas": "0.7 Ha", "tingkat": "Rendah", "desa": "Tambusai"}, {"lat": 1.0, "lon": 100.2, "wilayah": "Rokan Hulu", "luas": "3.0 Ha", "tingkat": "Tinggi", "desa": "Pendalian IV Koto"}, {"lat": 0.28, "lon": 101.0, "wilayah": "Kampar", "luas": "1.8 Ha", "tingkat": "Tinggi", "desa": "Bangkinang"}, {"lat": 0.4, "lon": 101.1, "wilayah": "Kampar", "luas": "1.2 Ha", "tingkat": "Sedang", "desa": "Tapung"}, {"lat": 0.1, "lon": 101.2, "wilayah": "Kampar", "luas": "2.5 Ha", "tingkat": "Sangat Tinggi", "desa": "Siak Hulu"}, {"lat": 0.35, "lon": 100.95, "wilayah": "Kampar", "luas": "0.9 Ha", "tingkat": "Rendah", "desa": "XIII Koto Kampar"}, {"lat": 0.8122, "lon": 102.3422, "wilayah": "Siak", "luas": "1.1 Ha", "tingkat": "Sedang", "desa": "Tualang"}, {"lat": 1.05, "lon": 102.5, "wilayah": "Siak", "luas": "2.7 Ha", "tingkat": "Tinggi", "desa": "Siak Sri Indrapura"}, {"lat": 0.9, "lon": 102.1, "wilayah": "Siak", "luas": "1.5 Ha", "tingkat": "Sedang", "desa": "Minas"}, {"lat": 1.15, "lon": 102.4, "wilayah": "Siak", "luas": "3.2 Ha", "tingkat": "Tinggi", "desa": "Bunga Raya"}, {"lat": 0.2872, "lon": 102.7317, "wilayah": "Pelalawan", "luas": "5.2 Ha", "tingkat": "Sangat Tinggi", "desa": "Pangkalan Kerinci"}, {"lat": -0.1, "lon": 102.9, "wilayah": "Pelalawan", "luas": "4.0 Ha", "tingkat": "Sangat Tinggi", "desa": "Teluk Meranti"}, {"lat": 0.1, "lon": 103.05, "wilayah": "Pelalawan", "luas": "2.2 Ha", "tingkat": "Tinggi", "desa": "Kuala Kampar"}, {"lat": 0.4, "lon": 102.8, "wilayah": "Pelalawan", "luas": "1.6 Ha", "tingkat": "Sedang", "desa": "Langgam"}, {"lat": 1.04, "lon": 102.75, "wilayah": "Kepulauan Meranti", "luas": "3.8 Ha", "tingkat": "Sangat Tinggi", "desa": "Selatpanjang"}, {"lat": 0.85, "lon": 102.9, "wilayah": "Kepulauan Meranti", "luas": "2.5 Ha", "tingkat": "Tinggi", "desa": "Tebing Tinggi"}, {"lat": 1.15, "lon": 103.0, "wilayah": "Kepulauan Meranti", "luas": "1.9 Ha", "tingkat": "Tinggi", "desa": "Rangsang Barat"}, {"lat": 0.9, "lon": 103.15, "wilayah": "Kepulauan Meranti", "luas": "1.2 Ha", "tingkat": "Sedang", "desa": "Merbau"}, {"lat": -0.35, "lon": 102.3, "wilayah": "Indragiri Hulu", "luas": "2.3 Ha", "tingkat": "Tinggi", "desa": "Rengat"}, {"lat": -0.5, "lon": 102.5, "wilayah": "Indragiri Hulu", "luas": "1.4 Ha", "tingkat": "Sedang", "desa": "Peranap"}, {"lat": -0.2, "lon": 101.9, "wilayah": "Indragiri Hulu", "luas": "3.1 Ha", "tingkat": "Tinggi", "desa": "Kuala Cenaku"}, {"lat": -0.65, "lon": 102.15, "wilayah": "Indragiri Hulu", "luas": "0.8 Ha", "tingkat": "Rendah", "desa": "Sungai Lala"}, {"lat": -0.6, "lon": 103.15, "wilayah": "Indragiri Hilir", "luas": "6.1 Ha", "tingkat": "Sangat Tinggi", "desa": "Tembilahan"}, {"lat": -0.85, "lon": 103.4, "wilayah": "Indragiri Hilir", "luas": "4.5 Ha", "tingkat": "Sangat Tinggi", "desa": "Enok"}, {"lat": -0.4, "lon": 103.5, "wilayah": "Indragiri Hilir", "luas": "3.7 Ha", "tingkat": "Tinggi", "desa": "Reteh"}, {"lat": -1.0, "lon": 103.25, "wilayah": "Indragiri Hilir", "luas": "2.9 Ha", "tingkat": "Tinggi", "desa": "Mandah"}, {"lat": -0.7, "lon": 102.9, "wilayah": "Indragiri Hilir", "luas": "1.6 Ha", "tingkat": "Sedang", "desa": "Kateman"}, {"lat": -0.52, "lon": 101.465, "wilayah": "Kuantan Singingi", "luas": "1.7 Ha", "tingkat": "Tinggi", "desa": "Teluk Kuantan"}, {"lat": -0.7, "lon": 101.6, "wilayah": "Kuantan Singingi", "luas": "1.0 Ha", "tingkat": "Sedang", "desa": "Benai"}, {"lat": -0.4, "lon": 101.8, "wilayah": "Kuantan Singingi", "luas": "2.4 Ha", "tingkat": "Tinggi", "desa": "Cerenti"}, {"lat": -0.9, "lon": 101.3, "wilayah": "Kuantan Singingi", "luas": "0.6 Ha", "tingkat": "Rendah", "desa": "Hulu Kuantan"}];
-    let markersLayers = [];
-
-    const colorMap = {
-        "Sangat Tinggi": "#7f0000",
-        "Tinggi":        "#e74c3c",
-        "Sedang":        "#f39c12",
-        "Rendah":        "#f1c40f"
-    };
-
-    function getFireIcon(tingkat) {
-        const color = colorMap[tingkat] || "#e74c3c";
-        return L.divIcon({
-            html: `<i class="fa-solid fa-fire" style="color:${color}; font-size:22px; filter: drop-shadow(0 0 3px rgba(0,0,0,0.7));"></i>`,
-            className: 'custom-fire-icon',
-            iconSize: [22, 22],
-            iconAnchor: [11, 11]
-        });
+    renderMarkers(filtered);
+    if(filtered.length>0){
+      const b=L.latLngBounds(filtered.map(d=>[d.lat,d.lon]));
+      map.fitBounds(b,{padding:[60,60]});
     }
+  }
 
-    function renderMarkers(data) {
-        markersLayers.forEach(m => map.removeLayer(m));
-        markersLayers = [];
-
-        data.forEach(item => {
-            const color = colorMap[item.tingkat] || "#e74c3c";
-            const popup = `
-                <div style="font-family: 'Segoe UI', Arial; width: 210px;">
-                    <h4 style="margin:0 0 6px 0; color:${color}; border-bottom:2px solid ${color}; padding-bottom:4px;">
-                        <i class="fa-solid fa-triangle-exclamation"></i> Kebakaran Terdeteksi AI
-                    </h4>
-                    <table style="width:100%; font-size:12px; border-collapse:collapse; line-height:1.7;">
-                        <tr><td style="color:#666; width:45%;"><b>Kabupaten:</b></td><td><b>${item.wilayah}</b></td></tr>
-                        <tr><td style="color:#666;"><b>Desa/Kec:</b></td><td>${item.desa}</td></tr>
-                        <tr><td style="color:#666;"><b>Luas Est.:</b></td><td style="color:${color}; font-weight:bold;">${item.luas}</td></tr>
-                        <tr><td style="color:#666;"><b>Keparahan:</b></td>
-                            <td><span style="background:${color}; color:white; padding:1px 6px; border-radius:10px; font-size:10px;">${item.tingkat}</span></td></tr>
-                        <tr><td style="color:#666;"><b>Koordinat:</b></td><td style="font-size:10px;">${item.lat.toFixed(4)}, ${item.lon.toFixed(4)}</td></tr>
-                    </table>
-                </div>
-            `;
-            const marker = L.marker([item.lat, item.lon], { icon: getFireIcon(item.tingkat) })
-                .bindPopup(popup);
-            marker.addTo(map);
-            markersLayers.push(marker);
-        });
-
-        document.getElementById('countShown').textContent = data.length;
-        document.getElementById('countTotal').textContent  = hotspotData.length;
-    }
-
-    function filterData() {
-        const search   = document.getElementById('searchLocation').value.toLowerCase();
-        const kab      = document.getElementById('filterKabupaten').value;
-        const tingkat  = document.getElementById('filterTingkat').value;
-
-        const filtered = hotspotData.filter(item => {
-            const matchSearch  = item.wilayah.toLowerCase().includes(search) || item.desa.toLowerCase().includes(search);
-            const matchKab     = (kab    === "ALL") || (item.wilayah === kab);
-            const matchTingkat = (tingkat === "ALL") || (item.tingkat === tingkat);
-            return matchSearch && matchKab && matchTingkat;
-        });
-
-        renderMarkers(filtered);
-
-        if (filtered.length > 0) {
-            const lats = filtered.map(i => i.lat);
-            const lons = filtered.map(i => i.lon);
-            map.fitBounds([
-                [Math.min(...lats) - 0.1, Math.min(...lons) - 0.1],
-                [Math.max(...lats) + 0.1, Math.max(...lons) + 0.1]
-            ]);
-        }
-    }
-
-    function resetFilter() {
-        document.getElementById('searchLocation').value  = '';
-        document.getElementById('filterKabupaten').value = 'ALL';
-        document.getElementById('filterTingkat').value   = 'ALL';
-        renderMarkers(hotspotData);
-        map.setView([0.5000, 101.9000], 8);
-    }
-
+  function resetFilter(){
+    document.getElementById('searchLocation').value='';
+    document.getElementById('filterKabupaten').value='ALL';
+    document.getElementById('filterTingkat').value='ALL';
     renderMarkers(hotspotData);
+    map.setView([0.50,101.90],8);
+  }
+
+  // ── Mobile panel toggle ──
+  function togglePanel(){
+    const p=document.getElementById('controlPanel');
+    const chevron=document.getElementById('chevronIcon');
+    if(p.classList.contains('collapsed')){
+      p.classList.replace('collapsed','expanded');
+      chevron.classList.add('up');
+    }else{
+      p.classList.replace('expanded','collapsed');
+      chevron.classList.remove('up');
+    }
+  }
+
+  // Desktop: panel selalu expanded
+  function applyPanelState(){
+    const p=document.getElementById('controlPanel');
+    if(window.innerWidth>600){
+      p.classList.remove('collapsed','expanded');
+    }else if(!p.classList.contains('expanded')){
+      p.classList.add('collapsed');
+    }
+  }
+  applyPanelState();
+  window.addEventListener('resize',applyPanelState);
+
+  renderMarkers(hotspotData);
 </script>
 </body>
 </html>
